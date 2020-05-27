@@ -25,6 +25,7 @@ function handleNewTask(event) {
          ...prevValue, [name]: value
       
         }));
+        
 }
 
 function expand() {

@@ -82,9 +82,10 @@ footer {
 
 .text-editable {
   overflow: hidden;
+  padding: 0px 3px;
 }
 
-.text-editable :hover{
+.task-label :hover{
   outline: rgb(138, 137, 137);
   outline-style: solid;
   outline-width: thin;
