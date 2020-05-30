@@ -19,26 +19,20 @@ function addTask(newTask, event) {
   })
   .then(function (response){
     console.log(response);
-  })         
+  })   
+       
 }
 
 function deleteTask(id) {
-    axios.delete("/api/task/" +id, {
-    params: {
-      id: id
-    }
-    }).then(function(response) {
+  axios.delete("/api/task/" +id, {
+    params: {id}
+  }).then(function(response) {
       console.log(response);
-    }).catch(function (error) {
-      console.log(error);  
-    })   
-}
- 
-  useEffect(() => {
-      getTasks();
-    }, [tasks])
-  
-
+      setTasks([]);
+  }).catch(function (error) {
+      console.log(error);  }
+  )} 
+         
   async function getTasks() {
     try {
     const response = await axios.get("/api/task");
@@ -59,8 +53,14 @@ function deleteTask(id) {
       console.log(error);  
     }) 
   }
-  
- 
+
+
+  useEffect(() => {
+    getTasks();
+  }, [tasks])
+
+
+
 return ( <div>
     <Header />
     <Container>  

@@ -78,11 +78,15 @@ footer {
   margin-bottom: 0px;
   cursor: text;
   max-width: 90%;
+  
 }
 
 .text-editable {
   overflow: hidden;
   padding: 0px 3px;
+  min-width: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .task-label :hover{

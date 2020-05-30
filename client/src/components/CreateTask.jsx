@@ -25,22 +25,32 @@ function handleNewTask(event) {
          ...prevValue, [name]: value
       
         }));
-        
+         
 }
 
 function expand() {
   setExpanded(true);
 }
 
+function submitTask(event) {
+  props.onAdd(newTask);
+  setNewTask({
+    title: "",
+    content: "",
+    date: ""
+  });
+  event.preventDefault();
+  }
+
     return (
-      <Form className="task-form" onSubmit={(event) => {props.onAdd(newTask);event.preventDefault(); }}>
+      <Form className="task-form" onSubmit={(event) => {props.onAdd(newTask); }}>
         <Form.Group controlId="exampleForm.ControlInput1">
         <Form.Control onClick={expand} onChange={handleNewTask} name="title" value={newTask.title} type="textarea" placeholder="Add a task..." autoComplete="off" rows={1}/>
         </Form.Group><div onChange={handleNewTask} name="date" type="text" value={newTask.date}/>
         {/* <Form.Group controlId="exampleForm.ControlTextarea1">
         {isExpanded && <Form.Control onChange={handleNewTask} name="content" value={newTask.content} as="textarea" placeholder="Task Content..." rows={isExpanded ? 3 : 1} />}
         </Form.Group> */}
-          <Zoom in={isExpanded}><Button variant="outline-secondary" type="submit"><AddCircleOutlineIcon/></Button></Zoom>
+          <Zoom in={isExpanded}><Button variant="outline-secondary" type="submit" onClick={submitTask}><AddCircleOutlineIcon/></Button></Zoom>
          
       </Form>
       );
