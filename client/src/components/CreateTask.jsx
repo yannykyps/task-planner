@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import Zoom from '@material-ui/core/Zoom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
@@ -50,7 +49,7 @@ function submitTask(event) {
         {/* <Form.Group controlId="exampleForm.ControlTextarea1">
         {isExpanded && <Form.Control onChange={handleNewTask} name="content" value={newTask.content} as="textarea" placeholder="Task Content..." rows={isExpanded ? 3 : 1} />}
         </Form.Group> */}
-          <Zoom in={isExpanded}><Button variant="outline-secondary" type="submit" onClick={submitTask}><AddCircleOutlineIcon/></Button></Zoom>
+          <Zoom in={isExpanded}><AddCircleOutlineIcon className="task-button-add" type="submit" onClick={submitTask} fontSize="large"/></Zoom>
          
       </Form>
       );
@@ -58,4 +57,4 @@ function submitTask(event) {
 
 export default CreateTask;
 
-
+//<Zoom in={isExpanded}><Button className="task-button-add" variant="outline-secondary" type="submit" onClick={submitTask}><AddCircleOutlineIcon/></Button></Zoom>

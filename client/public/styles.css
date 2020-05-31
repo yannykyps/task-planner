@@ -38,10 +38,15 @@ footer {
 
 .task-button-check {
   position: absolute;
-  color:  rgb(138, 137, 137);  
- 
+  color:  rgb(138, 137, 137);   
 }
-.task-button-check :hover, .task-button-delete :hover {
+
+.task-button-add {
+  
+  color:  rgb(138, 137, 137);   
+}
+
+.task-button-check :hover, .task-button-delete :hover, .task-button-add :hover {
   color: #46C2FF;
   transition: 0.2s;
 }
@@ -86,7 +91,6 @@ footer {
   padding: 0px 3px;
   min-width: 10px;
   white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .task-label :hover{

@@ -4,7 +4,6 @@ import Footer from "./Footer";
 import CreateTask from "./CreateTask";
 import Task from "./Task";
 import Container from "react-bootstrap/Container";
-import LabelColumn from "./LabelColumn";
 import axios from "axios";
 
 function App () {
@@ -33,8 +32,8 @@ function deleteTask(id) {
       console.log(error);  }
   )} 
          
-  async function getTasks() {
-    try {
+async function getTasks() {
+  try {
     const response = await axios.get("/api/task");
     setTasks(response.data);
   } catch (error) {
@@ -42,31 +41,40 @@ function deleteTask(id) {
     }
   }
 
-  function blurEditTask(patchTask, id) {
-    axios.patch("/api/task/" +id, { 
-      title: patchTask
-    })
-    .then(function(response) {
+function blurEditTask(patchTask, id) {
+  axios.patch("/api/task/" +id, { 
+    title: patchTask
+  }).then(function(response) {
       console.log(response)
-    }) 
-    .catch(function (error) {
+  }).catch(function (error) {
       console.log(error);  
     }) 
   }
 
 
-  useEffect(() => {
-    getTasks();
-  }, [tasks])
+useEffect(() => {
+  getTasks();
+}, [tasks])
 
+function ColumnLabel (){
 
+const [isVisible, setIsVisible] = useState(true);
+
+  function setVisilility () { 
+    return (tasks.length <1 && setIsVisible(false));
+
+  }
+      return (<div 
+      className="task-title" ref={setVisilility} style={{visibility: isVisible ? "visible" : "hidden"}}>
+      <h5>Tasks</h5>
+      </div> );
+  }
 
 return ( <div>
     <Header />
-    <Container>  
+    <Container>
     <CreateTask onAdd={addTask}/>
-    <LabelColumn />
-    
+    <ColumnLabel />  
     {tasks.map((taskItem, index) => (
     <Task 
     key={index}

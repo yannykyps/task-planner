@@ -4,7 +4,7 @@ function Header () {
 
     return (<div>
     <header>
-      <h1>Kanban</h1>
+      <h1>Planner App</h1>
     </header>
 
     </div>

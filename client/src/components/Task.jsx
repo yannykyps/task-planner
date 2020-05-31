@@ -28,7 +28,7 @@ function handleEditTask(event) {
   <div className="task-button-delete" style={isExpanded ? {visibility: "visible"}: {visibility: "hidden"}} onClick={() => {props.onChecked(props.id)} }><DeleteIcon /></div>
   <br/> 
   {isExpanded && <label className="task-label"><div className="text-editable"><p>{props.content}</p></div></label>}
-  {isExpanded && <label className="task-date"><p>{props.date}</p></label>}
+  {isExpanded && <label className="task-date"><p>Created: {props.date}</p></label>}
   </div>
   </div>
     );
