@@ -23,7 +23,7 @@ function handleEditTask(event) {
 
 
   return (<div className="task"><div onClick={expand} className="task-row" style={isExpanded ? {height: "auto"}: {height: 50}}>
-  <div className="task-button-check"><CheckCircleOutlineIcon /></div>
+  <div className="task-button-check" onClick={() => {props.onComplete(props.id)}}><CheckCircleOutlineIcon /></div>
   <label className="task-label"><ContentEditable className="text-editable" html={patchTask.current} onChange={handleEditTask} onBlur={() => {props.onBlur(patchTask.current, props.id)}} /></label>
   <div className="task-button-delete" style={isExpanded ? {visibility: "visible"}: {visibility: "hidden"}} onClick={() => {props.onChecked(props.id)} }><DeleteIcon /></div>
   <br/> 

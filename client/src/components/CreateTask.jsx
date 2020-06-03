@@ -15,7 +15,9 @@ const [isExpanded, setExpanded] = useState(false)
 const [newTask, setNewTask] = useState({
   title:"",
   content:"",
-  date: dateStamp
+  date: dateStamp,
+  complete: false,
+  completedDate: ""
 })
 
 function handleNewTask(event) {
@@ -46,6 +48,7 @@ function submitTask(event) {
         <Form.Group controlId="exampleForm.ControlInput1">
         <Form.Control onClick={expand} onChange={handleNewTask} name="title" value={newTask.title} type="textarea" placeholder="Add a task..." autoComplete="off" rows={1}/>
         </Form.Group><div onChange={handleNewTask} name="date" type="text" value={newTask.date}/>
+        <div onChange={handleNewTask} name="complete" type="text" value={newTask.complete}/>
         {/* <Form.Group controlId="exampleForm.ControlTextarea1">
         {isExpanded && <Form.Control onChange={handleNewTask} name="content" value={newTask.content} as="textarea" placeholder="Task Content..." rows={isExpanded ? 3 : 1} />}
         </Form.Group> */}

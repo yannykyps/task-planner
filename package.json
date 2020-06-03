@@ -9,7 +9,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.9.15",
     "nodemon": "^2.0.4",
-    "react-contenteditable": "^3.3.4"
+    "react-contenteditable": "^3.3.4",
+    "react-dropdown": "^1.7.0"
   },
   "devDependencies": {},
   "scripts": {

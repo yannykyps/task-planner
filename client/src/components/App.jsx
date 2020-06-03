@@ -3,18 +3,21 @@ import Header from "./Header";
 import Footer from "./Footer";
 import CreateTask from "./CreateTask";
 import Task from "./Task";
+import DropdownOptions from "./DropdownOptions"
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 
 function App () {
 
 const [tasks, setTasks] = useState([]);
+const [isComplete, setIsComplete] = useState(false);
 
 function addTask(newTask, event) {
   axios.post("/api/task", {
     title: newTask.title,
     content: newTask.content,
-    date: newTask.date
+    date: newTask.date,
+    complete: newTask.complete
   })
   .then(function (response){
     console.log(response);
@@ -33,9 +36,11 @@ function deleteTask(id) {
   )} 
          
 async function getTasks() {
+  
   try {
-    const response = await axios.get("/api/task");
+    const response = await axios.get("/api/task", {params: {complete:isComplete}});
     setTasks(response.data);
+      
   } catch (error) {
     console.error(error);
     }
@@ -51,10 +56,27 @@ function blurEditTask(patchTask, id) {
     }) 
   }
 
+function completeTask(id) {
+  var dateStamp = new Date();
+  var dd = String(dateStamp.getDate()).padStart(2, '0');
+  var mm = String(dateStamp.getMonth() + 1).padStart(2, '0');
+  var yyyy = dateStamp.getFullYear();
+  dateStamp = dd + '/' + mm + '/' + yyyy;
+  
+  axios.patch("/api/task/" +id, { 
+    complete: true,
+    completedDate: dateStamp 
+    
+  }).then(function(response) {
+      console.log(response)
+  }).catch(function (error) {
+      console.log(error);  
+    }) 
+  }  
 
 useEffect(() => {
   getTasks();
-}, [tasks])
+}, );
 
 function ColumnLabel (){
 
@@ -67,13 +89,16 @@ const [isVisible, setIsVisible] = useState(true);
       return (<div 
       className="task-title" ref={setVisilility} style={{visibility: isVisible ? "visible" : "hidden"}}>
       <h5>Tasks</h5>
+
       </div> );
   }
+ 
 
 return ( <div>
     <Header />
     <Container>
     <CreateTask onAdd={addTask}/>
+    <DropdownOptions />
     <ColumnLabel />  
     {tasks.map((taskItem, index) => (
     <Task 
@@ -84,6 +109,7 @@ return ( <div>
     date={taskItem.date}
     onChecked={deleteTask}
     onBlur={blurEditTask}
+    onComplete={completeTask}
     />  
     ))}
     </Container>
