@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback, useRef} from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import CreateTask from "./CreateTask";
@@ -10,7 +10,8 @@ import axios from "axios";
 function App () {
 
 const [tasks, setTasks] = useState([]);
-const [isComplete, setIsComplete] = useState(false);
+const forceUpdate = useCallback(() => setTasks([]),[]);
+const isComplete = useRef(false);
 
 function addTask(newTask, event) {
   axios.post("/api/task", {
@@ -21,8 +22,8 @@ function addTask(newTask, event) {
   })
   .then(function (response){
     console.log(response);
-  })   
-       
+    getTasks();
+  })        
 }
 
 function deleteTask(id) {
@@ -30,21 +31,20 @@ function deleteTask(id) {
     params: {id}
   }).then(function(response) {
       console.log(response);
-      setTasks([]);
+      getTasks();
   }).catch(function (error) {
       console.log(error);  }
-  )} 
-         
-async function getTasks() {
+)}          
   
-  try {
-    const response = await axios.get("/api/task", {params: {complete:isComplete}});
-    setTasks(response.data);
-      
+async function getTasks() {
+    try {  
+    const response = await axios.get("/api/task", {params: {complete:isComplete.current}});
+    forceUpdate();
+    setTasks(response.data);  
   } catch (error) {
     console.error(error);
     }
-  }
+}
 
 function blurEditTask(patchTask, id) {
   axios.patch("/api/task/" +id, { 
@@ -54,7 +54,7 @@ function blurEditTask(patchTask, id) {
   }).catch(function (error) {
       console.log(error);  
     }) 
-  }
+}
 
 function completeTask(id) {
   var dateStamp = new Date();
@@ -65,40 +65,43 @@ function completeTask(id) {
   
   axios.patch("/api/task/" +id, { 
     complete: true,
-    completedDate: dateStamp 
-    
+    completedDate: dateStamp  
   }).then(function(response) {
-      console.log(response)
+    console.log(response)
+    getTasks();
   }).catch(function (error) {
-      console.log(error);  
-    }) 
-  }  
-
-useEffect(() => {
-  getTasks();
-}, );
+    console.log(error);  
+  }) 
+}  
 
 function ColumnLabel (){
-
-const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   function setVisilility () { 
     return (tasks.length <1 && setIsVisible(false));
-
   }
       return (<div 
       className="task-title" ref={setVisilility} style={{visibility: isVisible ? "visible" : "hidden"}}>
       <h5>Tasks</h5>
-
       </div> );
-  }
- 
+}
+
+function dropdownValue (event) {
+  const value = event.value;
+  
+  value ? isComplete.current = true : isComplete.current = false
+  getTasks(); 
+} 
+
+useEffect(() => {
+  getTasks(); 
+}, []);
 
 return ( <div>
     <Header />
     <Container>
     <CreateTask onAdd={addTask}/>
-    <DropdownOptions />
+    <DropdownOptions onSelect={dropdownValue}/>
     <ColumnLabel />  
     {tasks.map((taskItem, index) => (
     <Task 
@@ -110,6 +113,7 @@ return ( <div>
     onChecked={deleteTask}
     onBlur={blurEditTask}
     onComplete={completeTask}
+    onCompleteTick={() => isComplete.current}
     />  
     ))}
     </Container>

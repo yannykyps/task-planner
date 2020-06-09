@@ -38,10 +38,12 @@ function submitTask(event) {
   setNewTask({
     title: "",
     content: "",
-    date: ""
+    date: dateStamp,
+    complete: false,
+    completeDate: ""
   });
   event.preventDefault();
-  }
+}
 
     return (
       <Form className="task-form" onSubmit={(event) => {props.onAdd(newTask); }}>
@@ -53,7 +55,6 @@ function submitTask(event) {
         {isExpanded && <Form.Control onChange={handleNewTask} name="content" value={newTask.content} as="textarea" placeholder="Task Content..." rows={isExpanded ? 3 : 1} />}
         </Form.Group> */}
           <Zoom in={isExpanded}><AddCircleOutlineIcon className="task-button-add" type="submit" onClick={submitTask} fontSize="large"/></Zoom>
-         
       </Form>
       );
     }
