@@ -1,6 +1,6 @@
 // /routes/taskRoutes.js
-const mongoose = require('mongoose');
-const Task = mongoose.model('tasks');
+const mongoose = require("mongoose");
+const Task = mongoose.model("tasks");
 
 module.exports = (app) => {
 

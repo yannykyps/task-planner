@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useCallback, useRef} from "react";
+
 import Header from "./Header";
 import Footer from "./Footer";
 import CreateTask from "./CreateTask";
 import Task from "./Task";
-import DropdownOptions from "./DropdownOptions"
+import DropdownOptions from "./DropdownOptions";
+
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 
@@ -11,9 +13,9 @@ function App () {
 
 const [tasks, setTasks] = useState([]);
 const forceUpdate = useCallback(() => setTasks([]),[]);
-const isComplete = useRef(false);
+const isComplete = useRef("false");
 
-function addTask(newTask, event) {
+function addTask(newTask) {
   axios.post("/api/task", {
     title: newTask.title,
     content: newTask.content,
@@ -46,7 +48,7 @@ async function getTasks() {
     }
 }
 
-function blurEditTask(patchTask, id) {
+function patchEditTask(patchTask, id) {
   axios.patch("/api/task/" +id, { 
     title: patchTask
   }).then(function(response) {
@@ -58,11 +60,11 @@ function blurEditTask(patchTask, id) {
 
 function completeTask(id) {
   var dateStamp = new Date();
-  var dd = String(dateStamp.getDate()).padStart(2, '0');
-  var mm = String(dateStamp.getMonth() + 1).padStart(2, '0');
+  var dd = String(dateStamp.getDate()).padStart(2, "0");
+  var mm = String(dateStamp.getMonth() + 1).padStart(2, "0");
   var yyyy = dateStamp.getFullYear();
-  dateStamp = dd + '/' + mm + '/' + yyyy;
-  
+  dateStamp = dd + "/" + mm + "/" + yyyy;
+
   axios.patch("/api/task/" +id, { 
     complete: true,
     completedDate: dateStamp  
@@ -89,7 +91,9 @@ function ColumnLabel (){
 function dropdownValue (event) {
   const value = event.value;
   
-  value ? isComplete.current = true : isComplete.current = false
+  value === "true" ? isComplete.current = "true" 
+  : !value === "false" ? isComplete.current = "false"
+  : isComplete.current = null
   getTasks(); 
 } 
 
@@ -108,12 +112,11 @@ return ( <div>
     key={index}
     id={taskItem._id}
     title={taskItem.title}
-    content={taskItem.content}
     date={taskItem.date}
     onChecked={deleteTask}
-    onBlur={blurEditTask}
+    onBlur={patchEditTask}
     onComplete={completeTask}
-    onCompleteTick={() => isComplete.current}
+    onCompleteTick={() => taskItem.complete}
     />  
     ))}
     </Container>
